@@ -1,94 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meus Links</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Barz | Links</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="bg" aria-hidden="true"></div>
+    <main class="card">
+      <header class="profile">
+        <div class="avatar" role="img" aria-label="Foto de perfil de Barz">
+          <img src="barzpfp.png" alt="Foto de perfil de Barz" />
+        </div>
+        <div class="identity">
+          <h1>Barz</h1>
+          <p class="handle">@pixelbarz</p>
+        </div>
+      </header>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, Helvetica, sans-serif;
-    }
+      <nav class="links" aria-label="Links principais">
+        <a class="link" href="https://x.com/barzpixelado" target="_blank" rel="noreferrer">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.53 3h3.43l-7.5 8.57L22 21h-6.6l-5.16-6.3L4.73 21H1.3l8.02-9.18L2 3h6.77l4.66 5.73L17.53 3Zm-1.2 16.04h1.9L7.73 4.87H5.7l10.63 14.17Z"/>
+            </svg>
+          </span>
+          <span>X / Twitter</span>
+        </a>
+        <a class="link" href="https://www.youtube.com/@pixelbarz" target="_blank" rel="noreferrer">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M21.6 7.2a3.1 3.1 0 0 0-2.2-2.2C17.6 4.5 12 4.5 12 4.5s-5.6 0-7.4.5A3.1 3.1 0 0 0 2.4 7.2 32.7 32.7 0 0 0 2 12a32.7 32.7 0 0 0 .4 4.8 3.1 3.1 0 0 0 2.2 2.2c1.8.5 7.4.5 7.4.5s5.6 0 7.4-.5a3.1 3.1 0 0 0 2.2-2.2A32.7 32.7 0 0 0 22 12a32.7 32.7 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/>
+            </svg>
+          </span>
+          <span>YouTube</span>
+        </a>
+        <a class="link" href="https://www.twitch.tv/pixelbarz" target="_blank" rel="noreferrer">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M4 2h16v11.5l-4.5 4.5H12L9 22v-4H4V2Zm2 2v12h5v3l3-3h4.5l2.5-2.5V4H6Zm3 2h2v6H9V6Zm5 0h2v6h-2V6Z"/>
+            </svg>
+          </span>
+          <span>Twitch</span>
+        </a>
+        <a class="link" href="https://bsky.app/profile/barzz.bsky.social" target="_blank" rel="noreferrer">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6.7 4.5c2.2 1.6 4.6 4.9 5.3 6.3.7-1.4 3.1-4.7 5.3-6.3 1.6-1.2 4.2-2.1 4.2.9 0 .6-.3 5.2-.5 5.9-.6 2.1-2.7 2.6-4.6 2.3 3.3.6 4.1 2.7 2.3 4.8-3.4 4.1-4.9-1-5.3-2.3-.1-.4-.1-.6-.2-.7-.1.1-.1.3-.2.7-.4 1.3-1.9 6.4-5.3 2.3-1.8-2.1-1-4.2 2.3-4.8-1.9.3-4-.2-4.6-2.3-.2-.7-.5-5.3-.5-5.9 0-3 2.6-2.1 4.2-.9Z"/>
+            </svg>
+          </span>
+          <span>Bluesky</span>
+        </a>
+        <a class="link" href="https://www.linkedin.com/in/jos%C3%A9-braz-9842023a8/" target="_blank" rel="noreferrer">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M4.98 3.5C4.98 4.9 3.88 6 2.5 6S0 4.9 0 3.5 1.1 1 2.48 1s2.5 1.1 2.5 2.5ZM0 8h5v16H0V8Zm7.5 0H12v2.2h.1c.6-1.1 2-2.2 4.2-2.2 4.5 0 5.3 3 5.3 6.8V24h-5v-7.1c0-1.7 0-3.8-2.3-3.8-2.3 0-2.7 1.8-2.7 3.7V24h-5V8Z"/>
+            </svg>
+          </span>
+          <span>LinkedIn</span>
+        </a>
+      </nav>
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #470000, #291010);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-    }
+      <footer class="note">feito por Barz</footer>
+    </main>
 
-    .container {
-      width: 100%;
-      max-width: 400px;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .profile-img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 15px;
-      border: 3px solid #fff;
-    }
-
-    h1 {
-      margin: 10px 0 5px;
-      font-size: 24px;
-    }
-
-    p {
-      margin-bottom: 25px;
-      opacity: 0.9;
-    }
-
-    .link {
-      display: block;
-      text-decoration: none;
-      background: #fff;
-      color: #333;
-      padding: 15px;
-      margin: 12px 0;
-      border-radius: 8px;
-      font-weight: bold;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .link:hover {
-      transform: scale(1.03);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    }
-
-    footer {
-      margin-top: 25px;
-      font-size: 12px;
-      opacity: 0.8;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container">
-    <img src="barzpfp.png" alt="Foto de perfil" class="profile-img">
-
-    <h1>Barz</h1>
-    <p>@pixelbarz</p>
-
-    <a class="link" href="https://x.com/barzpixelado" target="_blank">X/Twitter</a>
-    <a class="link" href="https://youtube.com/@pixelbarz" target="_blank">YouTube</a>
-    <a class="link" href="https://twitch.com/pixelbarz" target="_blank">Twitch</a>
-    <a class="link" href="https://bsky.app/profile/barzz.bsky.social" target="_blank">Bluesky</a>
-    <a class="link" href="http://linkedin.com/in/jos%C3%A9-braz-9842023a8/" target="_blank">LinkedIn</a>
-
-    <footer>
-      © 2026 • Feito por Barz :D
-      
-    </footer>
-  </div>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
