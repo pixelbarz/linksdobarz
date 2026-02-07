@@ -1,14 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap");
 
 :root {
-  --bg: #fff7f7;
-  --card: #ffffff;
-  --text: #1a1a1a;
-  --muted: #6b6b6b;
-  --accent: #ff4d4d;
-  --accent-soft: rgba(255, 77, 77, 0.16);
-  --ring: rgba(255, 77, 77, 0.45);
+  --bg: #120808;
+  --card: #1a1111;
+  --text: #f5f5f5;
+  --muted: #b7a9a9;
+  --accent: #b91c1c;
+  --accent-soft: rgba(185, 28, 28, 0.25);
+  --ring: rgba(185, 28, 28, 0.6);
+  --border: rgba(255, 255, 255, 0.08);
+  --shadow: rgba(0, 0, 0, 0.6);
+  --surface: rgba(255, 255, 255, 0.04);
 }
+
 
 * {
   box-sizing: border-box;
@@ -29,12 +33,13 @@ body {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(700px 700px at 15% 10%, rgba(255, 77, 77, 0.22), transparent 60%),
-    radial-gradient(800px 800px at 90% 15%, rgba(255, 77, 77, 0.16), transparent 55%),
-    radial-gradient(600px 600px at 50% 90%, rgba(255, 255, 255, 0.8), transparent 60%);
+    radial-gradient(800px 800px at 15% 10%, rgba(185, 28, 28, 0.35), transparent 60%),
+    radial-gradient(900px 900px at 90% 15%, rgba(120, 0, 0, 0.35), transparent 55%),
+    radial-gradient(600px 600px at 50% 90%, rgba(255, 255, 255, 0.05), transparent 60%);
   z-index: -1;
   animation: floatBg 12s ease-in-out infinite alternate;
 }
+
 
 @keyframes floatBg {
   from {
@@ -47,15 +52,16 @@ body {
 
 .card {
   width: min(420px, 100%);
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.98), rgba(255, 248, 248, 0.96));
-  border: 1px solid rgba(255, 77, 77, 0.18);
+  background: linear-gradient(160deg, rgba(26, 17, 17, 0.98), rgba(20, 12, 12, 0.96));
+  border: 1px solid var(--border);
   border-radius: 24px;
   padding: 28px;
-  box-shadow: 0 20px 50px rgba(255, 77, 77, 0.18);
+  box-shadow: 0 20px 50px var(--shadow);
   backdrop-filter: blur(6px);
   opacity: 0;
   transform: translateY(10px) scale(0.98);
   transition: opacity 0.5s ease, transform 0.5s ease;
+  position: relative;
 }
 
 .card.reveal {
@@ -114,11 +120,12 @@ body {
   border-radius: 16px;
   text-decoration: none;
   color: var(--text);
-  background: #ffffff;
-  border: 1px solid rgba(255, 77, 77, 0.2);
+  background: #1f1818;
+  border: 1px solid var(--border);
   transition: opacity 0.4s ease, transform 0.18s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   position: relative;
 }
+
 
 .link::after {
   content: "→";
@@ -154,8 +161,8 @@ body {
 .link:focus-visible {
   transform: translateY(-3px) scale(1.035);
   border-color: var(--accent);
-  background: rgba(255, 77, 77, 0.06);
-  box-shadow: 0 14px 28px rgba(255, 77, 77, 0.25);
+  background: var(--surface);
+  box-shadow: 0 14px 28px var(--shadow);
   outline: none;
 }
 
