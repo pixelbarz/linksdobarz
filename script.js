@@ -1,6 +1,9 @@
 const card = document.querySelector('.card');
 const links = document.querySelectorAll('.link');
 const clock = document.querySelector('#clock');
+const musicToggle = document.querySelector('#musicToggle');
+const musicState = document.querySelector('#musicState');
+const siteTrack = document.querySelector('#siteTrack');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function revealLayout() {
@@ -60,7 +63,54 @@ function enableSpotlight() {
   });
 }
 
+function setMusicState(isPlaying) {
+  if (!musicToggle || !musicState) {
+    return;
+  }
+
+  musicToggle.classList.toggle('is-playing', isPlaying);
+  musicToggle.setAttribute('aria-pressed', String(isPlaying));
+  musicState.textContent = isPlaying ? 'Pause' : 'Play';
+}
+
+function enableMusicToggle() {
+  if (!musicToggle || !musicState || !siteTrack) {
+    return;
+  }
+
+  setMusicState(false);
+
+  musicToggle.addEventListener('click', async () => {
+    if (siteTrack.paused) {
+      try {
+        await siteTrack.play();
+      } catch (_) {
+        setMusicState(false);
+      }
+      return;
+    }
+
+    siteTrack.pause();
+  });
+
+  siteTrack.addEventListener('play', () => {
+    setMusicState(true);
+  });
+
+  siteTrack.addEventListener('pause', () => {
+    if (!siteTrack.ended) {
+      setMusicState(false);
+    }
+  });
+
+  siteTrack.addEventListener('ended', () => {
+    siteTrack.currentTime = 0;
+    setMusicState(false);
+  });
+}
+
 revealLayout();
 updateClock();
 enableSpotlight();
+enableMusicToggle();
 window.setInterval(updateClock, 30000);

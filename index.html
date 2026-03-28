@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Barz | Links</title>
+    <title>Pixelbarz :D</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -28,6 +28,20 @@
             <p class="handle">@pixelbarz</p>
           </div>
           <p class="bio">Silly guy.</p>
+          <div class="music-box">
+            <p class="music-label">now playing</p>
+            <button class="music-toggle" id="musicToggle" type="button" aria-controls="siteTrack" aria-pressed="false">
+              <span class="music-toggle-main">
+                <span class="music-dot" aria-hidden="true"></span>
+                <span class="music-title">House Tour!</span>
+              </span>
+              <span class="music-state" id="musicState">Play</span>
+            </button>
+            <audio id="siteTrack" preload="metadata">
+              <source src="House-tour.mp3" type="audio/mpeg" />
+              Seu navegador nao suporta audio em MP3.
+            </audio>
+          </div>
         </section>
 
         <section class="links-panel">
