@@ -1,14 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
 
 :root {
-  --bg: #070707;
-  --panel: #0f0f0f;
-  --panel-soft: #141414;
-  --text: #f5f5f5;
-  --muted: #9a9a9a;
-  --line: rgba(255, 255, 255, 0.14);
-  --line-strong: rgba(255, 255, 255, 0.26);
-  --shadow: rgba(0, 0, 0, 0.42);
+  --bg: #081317;
+  --bg-deep: #10282f;
+  --bg-mid: #1c5f47;
+  --bg-light: #7dcc8a;
+  --panel: #101d3c;
+  --panel-soft: #15284f;
+  --text: #f1faf4;
+  --text-soft: #d2e7da;
+  --muted: #9fbeaf;
+  --line: rgba(142, 215, 162, 0.24);
+  --line-strong: rgba(169, 236, 185, 0.42);
+  --shadow: rgba(3, 12, 24, 0.55);
+  --accent-blue: #243f7a;
+  --accent-blue-strong: #35579c;
+  --accent-green: #8fdda1;
+  --accent-green-soft: #b6f0be;
   --mx: 50%;
   --my: 50%;
 }
@@ -33,9 +41,9 @@ body {
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.08), transparent 36%),
-    radial-gradient(circle at 78% 80%, rgba(255, 255, 255, 0.06), transparent 44%),
-    var(--bg);
+    radial-gradient(circle at 14% 12%, rgba(182, 240, 190, 0.22), transparent 34%),
+    radial-gradient(circle at 84% 78%, rgba(122, 203, 146, 0.2), transparent 42%),
+    linear-gradient(170deg, var(--bg-mid) 0%, var(--bg-deep) 44%, var(--bg) 100%);
 }
 
 .bg::after {
@@ -43,8 +51,8 @@ body {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(182, 240, 190, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(182, 240, 190, 0.08) 1px, transparent 1px);
   background-size: 34px 34px;
   mask-image: radial-gradient(circle at center, black 38%, transparent 100%);
 }
@@ -52,7 +60,12 @@ body {
 .card {
   width: min(760px, 100%);
   padding: 20px;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
+  background: linear-gradient(
+    160deg,
+    rgba(143, 221, 161, 0.13) 0%,
+    rgba(53, 87, 156, 0.2) 50%,
+    rgba(16, 29, 60, 0.35) 100%
+  );
   border: 1px solid var(--line);
   box-shadow: 0 18px 48px var(--shadow);
   position: relative;
@@ -66,7 +79,13 @@ body {
   content: "";
   position: absolute;
   inset: -20%;
-  background: radial-gradient(280px circle at var(--mx) var(--my), rgba(255, 255, 255, 0.1), transparent 60%);
+  background:
+    radial-gradient(280px circle at var(--mx) var(--my), rgba(182, 240, 190, 0.22), transparent 62%),
+    radial-gradient(
+      360px circle at calc(var(--mx) + 12%) calc(var(--my) + 8%),
+      rgba(53, 87, 156, 0.16),
+      transparent 65%
+    );
   pointer-events: none;
   transition: background-position 0.15s ease;
 }
@@ -155,7 +174,7 @@ body {
 
 .bio {
   margin: 0;
-  color: #cbcbcb;
+  color: var(--text-soft);
   font-size: 0.9rem;
   line-height: 1.55;
 }
@@ -179,7 +198,7 @@ body {
 .music-toggle {
   width: 100%;
   border: 1px solid var(--line);
-  background: #101010;
+  background: var(--panel);
   color: var(--text);
   padding: 8px 9px;
   display: flex;
@@ -208,7 +227,7 @@ body {
 
 .music-title {
   font-size: 0.74rem;
-  color: #d7d7d7;
+  color: var(--text-soft);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -224,20 +243,20 @@ body {
 
 .music-toggle:hover,
 .music-toggle:focus-visible {
-  border-color: rgba(255, 255, 255, 0.3);
-  background: #191919;
+  border-color: var(--line-strong);
+  background: linear-gradient(90deg, rgba(143, 221, 161, 0.14), rgba(36, 63, 122, 0.2));
   transform: translateX(2px);
   outline: none;
 }
 
 .music-toggle.is-playing {
-  border-color: rgba(255, 255, 255, 0.34);
-  background: #1a1a1a;
+  border-color: rgba(182, 240, 190, 0.52);
+  background: linear-gradient(90deg, rgba(143, 221, 161, 0.2), rgba(53, 87, 156, 0.28));
 }
 
 .music-toggle.is-playing .music-dot {
-  background: #f0f0f0;
-  box-shadow: 0 0 0 4px rgba(240, 240, 240, 0.16);
+  background: var(--accent-green);
+  box-shadow: 0 0 0 4px rgba(143, 221, 161, 0.22);
 }
 
 .music-toggle.is-playing .music-state {
@@ -286,7 +305,7 @@ body {
   position: absolute;
   inset: 0 auto 0 0;
   width: 3px;
-  background: #f0f0f0;
+  background: var(--accent-green);
   transform: scaleY(0.18);
   transform-origin: center;
   transition: transform 0.2s ease;
@@ -302,7 +321,7 @@ body {
 .icon {
   width: 20px;
   height: 20px;
-  color: #ececec;
+  color: var(--text-soft);
   flex: 0 0 auto;
 }
 
@@ -330,8 +349,8 @@ body {
 
 .link:hover,
 .link:focus-visible {
-  background: #191919;
-  border-color: rgba(255, 255, 255, 0.3);
+  background: linear-gradient(90deg, rgba(143, 221, 161, 0.16), rgba(53, 87, 156, 0.24));
+  border-color: var(--line-strong);
   transform: translateX(4px);
   outline: none;
 }
@@ -343,7 +362,7 @@ body {
 
 .link:hover .arrow,
 .link:focus-visible .arrow {
-  color: var(--text);
+  color: var(--accent-green-soft);
   transform: translate(2px, -2px);
 }
 
