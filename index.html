@@ -28,15 +28,20 @@
             <p class="handle">@pixelbarz</p>
           </div>
           <p class="bio">Silly guy.</p>
+          <p class="bio">:P</p>
           <div class="music-box">
             <p class="music-label">now playing</p>
-            <button class="music-toggle" id="musicToggle" type="button" aria-controls="siteTrack" aria-pressed="false">
-              <span class="music-toggle-main">
-                <span class="music-dot" aria-hidden="true"></span>
-                <span class="music-title">4555 - MeiaUm</span>
-              </span>
-              <span class="music-state" id="musicState">Play</span>
-            </button>
+            <div class="music-row">
+              <div class="music-icon-slot" aria-label="Espaco para icone da musica">
+                <img class="music-icon-image" src="4555.jpg" alt="Capa da musica 4555" />
+              </div>
+              <button class="music-toggle" id="musicToggle" type="button" aria-controls="siteTrack" aria-pressed="false">
+                <span class="music-toggle-main">
+                  <span class="music-title">4555 - MeiaUm</span>
+                </span>
+                <span class="music-control" id="musicControl" aria-hidden="true">▶</span>
+              </button>
+            </div>
             <audio id="siteTrack" preload="metadata">
               <source src="4555.mp3" type="audio/mpeg" />
               Seu navegador nao suporta audio em MP3.
@@ -47,55 +52,113 @@
         <section class="links-panel">
           <p class="section-label">me</p>
 
-          <nav class="links" aria-label="Links principais">
-            <a class="link" href="https://josebraz.cc" target="_blank" rel="noreferrer">
-              <span class="link-main">
-                <span class="icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M3 4h18v14H3V4Zm2 2v10h14V6H5Zm5 14h4v-2h-4v2Z"/>
-                  </svg>
-                </span>
-                <span class="label">Portfólio</span>
-              </span>
-              <span class="arrow" aria-hidden="true">↗</span>
-            </a>
+          <div class="panel-tabs" role="tablist" aria-label="Visualizacoes do painel">
+            <button
+              class="panel-tab is-active"
+              id="linksTabButton"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="linksTabPanel"
+              data-tab-target="linksTabPanel"
+            >
+              links
+            </button>
+            <button
+              class="panel-tab"
+              id="terminalTabButton"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="terminalTabPanel"
+              data-tab-target="terminalTabPanel"
+              tabindex="-1"
+            >
+              terminal
+            </button>
+          </div>
 
-            <a class="link" href="https://x.com/pixelbarz" target="_blank" rel="noreferrer">
-              <span class="link-main">
-                <span class="icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M17.53 3h3.43l-7.5 8.57L22 21h-6.6l-5.16-6.3L4.73 21H1.3l8.02-9.18L2 3h6.77l4.66 5.73L17.53 3Zm-1.2 16.04h1.9L7.73 4.87H5.7l10.63 14.17Z"/>
-                  </svg>
-                </span>
-                <span class="label">X / Twitter</span>
-              </span>
-              <span class="arrow" aria-hidden="true">↗</span>
-            </a>
+          <div class="tab-panels">
+            <div class="tab-panel is-active" id="linksTabPanel" role="tabpanel" aria-labelledby="linksTabButton">
+              <nav class="links" aria-label="Links principais">
+                <a class="link" href="https://josebraz.cc" target="_blank" rel="noreferrer">
+                  <span class="link-main">
+                    <span class="icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 4h18v14H3V4Zm2 2v10h14V6H5Zm5 14h4v-2h-4v2Z"/>
+                      </svg>
+                    </span>
+                    <span class="label">Portfólio</span>
+                  </span>
+                  <span class="arrow" aria-hidden="true">↗</span>
+                </a>
 
-            <a class="link" href="https://github.com/pixelbarz" target="_blank" rel="noreferrer">
-              <span class="link-main">
-                <span class="icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.111.82-.261.82-.577 0-.285-.012-1.04-.017-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.73.083-.73 1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.762-1.605-2.665-.305-5.467-1.333-5.467-5.932 0-1.31.468-2.381 1.235-3.221-.124-.304-.535-1.527.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.004.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.649.242 2.872.118 3.176.77.84 1.233 1.911 1.233 3.221 0 4.61-2.807 5.624-5.479 5.921.43.372.823 1.103.823 2.222 0 1.606-.014 2.903-.014 3.297 0 .319.218.694.825.576C20.565 21.796 24 17.297 24 12 24 5.37 18.63 0 12 0z"/>
-                  </svg>
-                </span>
-                <span class="label">GitHub</span>
-              </span>
-              <span class="arrow" aria-hidden="true">↗</span>
-            </a>
+                <a class="link" href="https://x.com/pixelbarz" target="_blank" rel="noreferrer">
+                  <span class="link-main">
+                    <span class="icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.53 3h3.43l-7.5 8.57L22 21h-6.6l-5.16-6.3L4.73 21H1.3l8.02-9.18L2 3h6.77l4.66 5.73L17.53 3Zm-1.2 16.04h1.9L7.73 4.87H5.7l10.63 14.17Z"/>
+                      </svg>
+                    </span>
+                    <span class="label">X / Twitter</span>
+                  </span>
+                  <span class="arrow" aria-hidden="true">↗</span>
+                </a>
 
-            <a class="link" href="https://www.twitch.tv/pixelbarz" target="_blank" rel="noreferrer">
-              <span class="link-main">
-                <span class="icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M4 2h16v11.5l-4.5 4.5H12L9 22v-4H4V2Zm2 2v12h5v3l3-3h4.5l2.5-2.5V4H6Zm3 2h2v6H9V6Zm5 0h2v6h-2V6Z"/>
-                  </svg>
-                </span>
-                <span class="label">Twitch</span>
-              </span>
-              <span class="arrow" aria-hidden="true">↗</span>
-            </a>
-          </nav>
+                <a class="link" href="https://github.com/pixelbarz" target="_blank" rel="noreferrer">
+                  <span class="link-main">
+                    <span class="icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.111.82-.261.82-.577 0-.285-.012-1.04-.017-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.73.083-.73 1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.762-1.605-2.665-.305-5.467-1.333-5.467-5.932 0-1.31.468-2.381 1.235-3.221-.124-.304-.535-1.527.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.004.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.649.242 2.872.118 3.176.77.84 1.233 1.911 1.233 3.221 0 4.61-2.807 5.624-5.479 5.921.43.372.823 1.103.823 2.222 0 1.606-.014 2.903-.014 3.297 0 .319.218.694.825.576C20.565 21.796 24 17.297 24 12 24 5.37 18.63 0 12 0z"/>
+                      </svg>
+                    </span>
+                    <span class="label">GitHub</span>
+                  </span>
+                  <span class="arrow" aria-hidden="true">↗</span>
+                </a>
+
+                <a class="link" href="https://www.twitch.tv/pixelbarz" target="_blank" rel="noreferrer">
+                  <span class="link-main">
+                    <span class="icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M4 2h16v11.5l-4.5 4.5H12L9 22v-4H4V2Zm2 2v12h5v3l3-3h4.5l2.5-2.5V4H6Zm3 2h2v6H9V6Zm5 0h2v6h-2V6Z"/>
+                      </svg>
+                    </span>
+                    <span class="label">Twitch</span>
+                  </span>
+                  <span class="arrow" aria-hidden="true">↗</span>
+                </a>
+              </nav>
+            </div>
+
+            <div class="tab-panel" id="terminalTabPanel" role="tabpanel" aria-labelledby="terminalTabButton" hidden>
+              <section class="terminal" aria-label="Terminal Linux">
+                <header class="terminal-head" aria-hidden="true">
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-dot"></span>
+                  <span class="terminal-title">barz@linkboard:~</span>
+                </header>
+
+                <div class="terminal-body" id="terminalOutput" aria-live="polite"></div>
+
+                <form class="terminal-form" id="terminalForm" autocomplete="off">
+                  <label class="terminal-prompt" for="terminalInput">
+                    <span class="terminal-user">barz@linkboard</span>:<span class="terminal-path">~</span>$
+                  </label>
+                  <input
+                    class="terminal-input"
+                    id="terminalInput"
+                    name="terminal"
+                    type="text"
+                    spellcheck="false"
+                    placeholder="Digite um comando..."
+                    aria-label="Comando do terminal"
+                  />
+                </form>
+              </section>
+            </div>
+          </div>
         </section>
       </div>
 

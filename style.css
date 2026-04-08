@@ -185,6 +185,7 @@ body {
   padding: 7px;
   display: grid;
   gap: 5px;
+  overflow: hidden;
 }
 
 .music-label {
@@ -195,8 +196,44 @@ body {
   color: var(--muted);
 }
 
-.music-toggle {
+.music-row {
   width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.music-icon-slot {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border: 1px dashed var(--line-strong);
+  background: linear-gradient(145deg, rgba(143, 221, 161, 0.12), rgba(36, 63, 122, 0.24));
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.music-icon-text {
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+}
+
+.music-icon-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.music-toggle {
+  width: auto;
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid var(--line);
   background: var(--panel);
   color: var(--text);
@@ -216,15 +253,6 @@ body {
   min-width: 0;
 }
 
-.music-dot {
-  width: 7px;
-  height: 7px;
-  border: 1px solid var(--line-strong);
-  background: var(--panel);
-  flex: 0 0 auto;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
-}
-
 .music-title {
   font-size: 0.74rem;
   color: var(--text-soft);
@@ -233,19 +261,22 @@ body {
   text-overflow: ellipsis;
 }
 
-.music-state {
-  font-size: 0.58rem;
-  text-transform: uppercase;
-  letter-spacing: 0.13em;
+.music-control {
+  font-size: 0.78rem;
+  line-height: 1;
   color: var(--muted);
   flex: 0 0 auto;
+  width: 18px;
+  display: inline-grid;
+  place-items: center;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .music-toggle:hover,
 .music-toggle:focus-visible {
   border-color: var(--line-strong);
   background: linear-gradient(90deg, rgba(143, 221, 161, 0.14), rgba(36, 63, 122, 0.2));
-  transform: translateX(2px);
+  transform: none;
   outline: none;
 }
 
@@ -254,13 +285,9 @@ body {
   background: linear-gradient(90deg, rgba(143, 221, 161, 0.2), rgba(53, 87, 156, 0.28));
 }
 
-.music-toggle.is-playing .music-dot {
-  background: var(--accent-green);
-  box-shadow: 0 0 0 4px rgba(143, 221, 161, 0.22);
-}
-
-.music-toggle.is-playing .music-state {
+.music-toggle.is-playing .music-control {
   color: var(--text);
+  transform: scale(1.05);
 }
 
 #siteTrack {
@@ -277,6 +304,187 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--muted);
+}
+
+.panel-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.panel-tab {
+  border: 1px solid var(--line);
+  background: var(--panel-soft);
+  color: var(--muted);
+  min-height: 32px;
+  padding: 0 12px;
+  font: inherit;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.panel-tab:hover,
+.panel-tab:focus-visible {
+  border-color: var(--line-strong);
+  color: var(--text-soft);
+  background: linear-gradient(90deg, rgba(143, 221, 161, 0.08), rgba(53, 87, 156, 0.16));
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.panel-tab.is-active {
+  border-color: rgba(182, 240, 190, 0.52);
+  color: var(--text);
+  background: linear-gradient(95deg, rgba(143, 221, 161, 0.2), rgba(53, 87, 156, 0.24));
+}
+
+.tab-panel {
+  animation: tab-fade 0.25s ease;
+}
+
+.tab-panel[hidden] {
+  display: none;
+}
+
+@keyframes tab-fade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.terminal {
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(8, 19, 23, 0.9), rgba(16, 29, 60, 0.95));
+  min-height: 320px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.terminal-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid var(--line);
+  min-height: 34px;
+  padding: 8px 10px;
+}
+
+.terminal-dot {
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--line-strong);
+  background: var(--panel-soft);
+}
+
+.terminal-title {
+  margin-left: 8px;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.terminal-body {
+  padding: 10px;
+  overflow: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: var(--text-soft);
+}
+
+.terminal-entry {
+  margin: 0 0 9px;
+}
+
+.terminal-command-row {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.terminal-user {
+  color: var(--accent-green-soft);
+}
+
+.terminal-path {
+  color: #9ab8ff;
+}
+
+.terminal-command {
+  color: var(--text);
+}
+
+.terminal-output-line {
+  margin: 3px 0 0;
+  white-space: pre-wrap;
+}
+
+.terminal-output-line.is-muted {
+  color: var(--muted);
+}
+
+.terminal-output-line.is-accent {
+  color: var(--accent-green-soft);
+}
+
+.terminal-output-block {
+  margin: 5px 0 0;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.terminal-output-block.is-matrix {
+  color: #afffbd;
+  line-height: 1.25;
+  text-shadow: 0 0 8px rgba(143, 221, 161, 0.3);
+}
+
+.terminal-form {
+  border-top: 1px solid var(--line);
+  background: rgba(16, 29, 60, 0.64);
+  padding: 9px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.terminal-prompt {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.74rem;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+.terminal-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.74rem;
+  padding: 0;
+}
+
+.terminal-input::placeholder {
+  color: rgba(210, 231, 218, 0.54);
+}
+
+.terminal-input:focus {
+  outline: none;
 }
 
 .links {
@@ -411,5 +619,13 @@ body {
   .avatar {
     width: 76px;
     height: 76px;
+  }
+
+  .panel-tab {
+    flex: 1;
+  }
+
+  .terminal {
+    min-height: 290px;
   }
 }
