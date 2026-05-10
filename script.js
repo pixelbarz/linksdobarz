@@ -14,6 +14,7 @@ const terminalOutput = document.querySelector('#terminalOutput');
 const terminalForm = document.querySelector('#terminalForm');
 const terminalInput = document.querySelector('#terminalInput');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isMobile = window.matchMedia('(max-width: 700px)').matches || 'ontouchstart' in window;
 
 const terminalLinks = {
   portfolio: 'https://josebraz.cc',
@@ -137,6 +138,37 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && terminalPopup && terminalPopup.classList.contains('is-open')) closeTerminal();
 });
 
+function createSparkle(e) {
+  if (reduceMotion) return;
+  const sparkle = document.createElement('div');
+  const size = 4 + Math.random() * 6;
+  const x = e.clientX ?? e.touches?.[0]?.clientX ?? window.innerWidth / 2;
+  const y = e.clientY ?? e.touches?.[0]?.clientY ?? window.innerHeight / 2;
+  const angle = Math.random() * 360;
+  const dist = 20 + Math.random() * 40;
+  const colors = ['#5ad4e6', '#6cffb0', '#d4efe0'];
+  sparkle.style.cssText = `
+    position: fixed; pointer-events: none; z-index: 99999;
+    width: ${size}px; height: ${size}px;
+    background: ${colors[Math.floor(Math.random() * colors.length)]};
+    border-radius: 50%;
+    left: ${x}px; top: ${y}px;
+    box-shadow: 0 0 ${size * 2}px currentColor;
+    color: ${colors[Math.floor(Math.random() * colors.length)]};
+    transform: translate(-50%, -50%);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 1;
+  `;
+  document.body.append(sparkle);
+  requestAnimationFrame(() => {
+    sparkle.style.transform = `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist}px)) scale(0)`;
+    sparkle.style.opacity = '0';
+  });
+  setTimeout(() => sparkle.remove(), 700);
+}
+
+document.addEventListener('click', e => createSparkle(e));
+
 function scrollTerminalToBottom() {
   if (terminalOutput) terminalOutput.scrollTop = terminalOutput.scrollHeight;
 }
@@ -211,7 +243,7 @@ function buildFastfetchText() {
     '|____/ \\__,_|_| /____|',
     '',
     'user   → barz@linkboard',
-    'os     → Pixel Linux 43',
+    'os     → Pixel Linux 44',
     'shell  → /bin/pixelsh',
     `uptime → ${formatUptime(sessionStartedAt)}`,
     `song   → ${songState}`,
@@ -353,12 +385,36 @@ function handleTerminalHistory(direction) {
   terminalInput.setSelectionRange(terminalInput.value.length, terminalInput.value.length);
 }
 
-function initTerminal() {
-  appendSystemMessage([
+async function typeText(element, text, speed = 20) {
+  if (reduceMotion || isMobile) { element.textContent = text; return; }
+  for (let i = 0; i <= text.length; i++) {
+    element.textContent = text.slice(0, i);
+    await new Promise(r => setTimeout(r, speed));
+  }
+}
+
+async function initTerminal() {
+  const welcomeLines = [
     'PixelShell 2.0 — inicializado.',
     'digite "help" para listar os comandos.',
     'dica: tente "fastfetch" ou "matrix".'
-  ]);
+  ];
+
+  if (!reduceMotion && !isMobile) {
+    const entry = document.createElement('div');
+    entry.className = 'terminal-entry';
+    terminalOutput.append(entry);
+    for (let i = 0; i < welcomeLines.length; i++) {
+      const line = document.createElement('p');
+      line.className = 'terminal-output-line' + (i === 0 ? ' is-accent' : ' is-muted');
+      entry.append(line);
+      await typeText(line, welcomeLines[i], 18);
+      scrollTerminalToBottom();
+      await new Promise(r => setTimeout(r, 120));
+    }
+  } else {
+    appendSystemMessage(welcomeLines);
+  }
 
   terminalForm.addEventListener('submit', e => {
     e.preventDefault();
