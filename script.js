@@ -1,108 +1,128 @@
-const card = document.querySelector('#card');
-const links = document.querySelectorAll('.link');
-const clock = document.querySelector('#clock');
-const musicToggle = document.querySelector('#musicToggle');
-const musicControl = document.querySelector('#musicControl');
-const siteTrack = document.querySelector('#siteTrack');
-const statusDot = document.querySelector('#statusDot');
-const terminalOverlay = document.querySelector('#terminalOverlay');
-const terminalPopup = document.querySelector('#terminalPopup');
-const terminalOpenBtn = document.querySelector('#terminalOpenBtn');
-const terminalCloseBtn = document.querySelector('#terminalCloseBtn');
-const terminalCloseDot = document.querySelector('#terminalCloseDot');
-const terminalOutput = document.querySelector('#terminalOutput');
-const terminalForm = document.querySelector('#terminalForm');
-const terminalInput = document.querySelector('#terminalInput');
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const isMobile = window.matchMedia('(max-width: 700px)').matches || 'ontouchstart' in window;
+const panel         = document.getElementById('panel');
+const clockEl       = document.getElementById('clock');
+const musicToggle   = document.getElementById('musicToggle');
+const musicControl  = document.getElementById('musicControl');
+const siteTrack     = document.getElementById('siteTrack');
+const mpEq          = document.getElementById('mpEq');
+const terminalOpenBtn  = document.getElementById('terminalOpenBtn');
+const terminalOverlay  = document.getElementById('terminalOverlay');
+const terminalPopup    = document.getElementById('terminalPopup');
+const terminalCloseBtn = document.getElementById('terminalCloseBtn');
+const terminalCloseDot = document.getElementById('terminalCloseDot');
+const terminalOutput   = document.getElementById('terminalOutput');
+const terminalForm     = document.getElementById('terminalForm');
+const terminalInput    = document.getElementById('terminalInput');
+const linkCards        = document.querySelectorAll('.link-card');
 
-const terminalLinks = {
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isMobile      = window.matchMedia('(max-width: 700px)').matches || 'ontouchstart' in window;
+
+const LINKS = {
   portfolio: 'https://josebraz.cc',
-  site: 'https://josebraz.cc',
-  x: 'https://x.com/pixelbarz',
-  twitter: 'https://x.com/pixelbarz',
-  github: 'https://github.com/pixelbarz',
-  twitch: 'https://www.twitch.tv/pixelbarz'
+  site:      'https://josebraz.cc',
+  x:         'https://x.com/pixelbarz',
+  twitter:   'https://x.com/pixelbarz',
+  github:    'https://github.com/pixelbarz',
+  twitch:    'https://www.twitch.tv/pixelbarz',
 };
 
-const terminalFortunes = [
+const FORTUNES = [
   'ablublé.',
   'esqueci o conselho de hoje.',
   'faça algo legal hoje, vc merece :P.',
-  'ehehe sem conselho hoje.'
+  'ehehe sem conselho hoje.',
 ];
 
 const terminalHistory = [];
-let terminalHistoryIndex = -1;
-const sessionStartedAt = Date.now();
-let matrixIntervalId = null;
-let terminalInitialized = false;
+let historyIdx        = -1;
+let terminalReady     = false;
+let matrixTimer       = null;
+let sessionStart      = Date.now();
 
-function revealLayout() {
-  if (!card) return;
-  if (reduceMotion) {
-    card.classList.add('reveal');
-    links.forEach(l => l.classList.add('reveal'));
+function revealPage() {
+  if (!panel) return;
+  if (reducedMotion) {
+    panel.classList.add('revealed');
+    linkCards.forEach(c => c.classList.add('revealed'));
     return;
   }
-  setTimeout(() => card.classList.add('reveal'), 80);
-  links.forEach((link, i) => {
-    setTimeout(() => link.classList.add('reveal'), 280 + i * 100);
+  setTimeout(() => panel.classList.add('revealed'), 60);
+  linkCards.forEach((c, i) => {
+    setTimeout(() => c.classList.add('revealed'), 260 + i * 90);
   });
 }
 
-function updateClock() {
-  if (!clock) return;
-  clock.textContent = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+function tickClock() {
+  if (!clockEl) return;
+  clockEl.textContent = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 }
 
-function enableSpotlight() {
-  if (!card || reduceMotion) return;
-  const inner = card.querySelector('.card-inner');
-  card.addEventListener('pointermove', e => {
-    const rect = inner.getBoundingClientRect();
-    inner.style.setProperty('--mx', `${((e.clientX - rect.left) / rect.width) * 100}%`);
-    inner.style.setProperty('--my', `${((e.clientY - rect.top) / rect.height) * 100}%`);
-  });
-  card.addEventListener('pointerleave', () => {
-    inner.style.setProperty('--mx', '50%');
-    inner.style.setProperty('--my', '50%');
-  });
-}
-
-function setMusicState(isPlaying) {
+function setMusicPlaying(playing) {
   if (!musicToggle) return;
-  musicToggle.classList.toggle('is-playing', isPlaying);
-  musicToggle.setAttribute('aria-pressed', String(isPlaying));
-  if (musicControl) musicControl.textContent = isPlaying ? '❚❚' : '▶';
-  if (statusDot) statusDot.style.display = isPlaying ? 'inline-block' : 'none';
+  musicToggle.classList.toggle('is-playing', playing);
+  musicToggle.setAttribute('aria-pressed', String(playing));
+  if (musicControl) musicControl.textContent = playing ? '❚❚' : '▶';
+  if (mpEq) mpEq.classList.toggle('active', playing);
 }
 
-async function setTrackPlayback(mode = 'toggle') {
-  if (!siteTrack) return { ok: false, message: 'player indisponivel.' };
-  const norm = mode.toLowerCase();
-  const shouldPlay = norm === 'on' ? true : norm === 'off' ? false : siteTrack.paused;
+async function togglePlayback(mode) {
+  if (!siteTrack) return { ok: false, msg: 'player indisponivel.' };
+  const m = (mode || 'toggle').toLowerCase();
+  const shouldPlay = m === 'on' ? true : m === 'off' ? false : siteTrack.paused;
   if (shouldPlay) {
     try {
       await siteTrack.play();
-      return { ok: true, message: 'tocando agora.' };
-    } catch (_) {
-      setMusicState(false);
-      return { ok: false, message: 'nao consegui tocar. navegador bloqueou o audio.' };
+      return { ok: true, msg: 'tocando agora.' };
+    } catch {
+      setMusicPlaying(false);
+      return { ok: false, msg: 'navegador bloqueou o audio. clique em qualquer lugar e tente novamente.' };
     }
   }
   siteTrack.pause();
-  return { ok: true, message: 'musica pausada.' };
+  return { ok: true, msg: 'musica pausada.' };
 }
 
-function enableMusicToggle() {
+function initMusic() {
   if (!musicToggle || !siteTrack) return;
-  setMusicState(false);
-  musicToggle.addEventListener('click', () => void setTrackPlayback('toggle'));
-  siteTrack.addEventListener('play', () => setMusicState(true));
-  siteTrack.addEventListener('pause', () => { if (!siteTrack.ended) setMusicState(false); });
-  siteTrack.addEventListener('ended', () => { siteTrack.currentTime = 0; setMusicState(false); });
+  setMusicPlaying(false);
+  musicToggle.addEventListener('click', () => void togglePlayback('toggle'));
+  siteTrack.addEventListener('play',  () => setMusicPlaying(true));
+  siteTrack.addEventListener('pause', () => { if (!siteTrack.ended) setMusicPlaying(false); });
+  siteTrack.addEventListener('ended', () => { siteTrack.currentTime = 0; setMusicPlaying(false); });
 }
+
+function createSparkle(e) {
+  if (reducedMotion) return;
+  const x   = e.clientX ?? e.touches?.[0]?.clientX ?? window.innerWidth / 2;
+  const y   = e.clientY ?? e.touches?.[0]?.clientY ?? window.innerHeight / 2;
+  const sz  = 3 + Math.random() * 5;
+  const ang = Math.random() * Math.PI * 2;
+  const dst = 18 + Math.random() * 36;
+  const el  = document.createElement('span');
+  el.style.cssText = [
+    'position:fixed',
+    'pointer-events:none',
+    'z-index:99999',
+    `width:${sz}px`,
+    `height:${sz}px`,
+    'border-radius:50%',
+    'background:#4D7AFF',
+    `left:${x}px`,
+    `top:${y}px`,
+    'transform:translate(-50%,-50%)',
+    'box-shadow:0 0 8px #2B5CE6',
+    'transition:all 0.55s cubic-bezier(0.16,1,0.3,1)',
+    'opacity:1',
+  ].join(';');
+  document.body.append(el);
+  requestAnimationFrame(() => {
+    el.style.transform = `translate(calc(-50% + ${Math.cos(ang) * dst}px), calc(-50% + ${Math.sin(ang) * dst}px)) scale(0)`;
+    el.style.opacity   = '0';
+  });
+  setTimeout(() => el.remove(), 600);
+}
+
+document.addEventListener('click', e => createSparkle(e));
 
 function openTerminal() {
   terminalOverlay.classList.add('is-open');
@@ -110,11 +130,8 @@ function openTerminal() {
   terminalOverlay.setAttribute('aria-hidden', 'false');
   terminalPopup.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
-  if (!terminalInitialized) {
-    initTerminal();
-    terminalInitialized = true;
-  }
-  setTimeout(() => terminalInput && terminalInput.focus(), 350);
+  if (!terminalReady) { bootTerminal(); terminalReady = true; }
+  setTimeout(() => terminalInput && terminalInput.focus(), 320);
 }
 
 function closeTerminal() {
@@ -123,113 +140,76 @@ function closeTerminal() {
   terminalOverlay.setAttribute('aria-hidden', 'true');
   terminalPopup.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
-  stopMatrixAnimation();
+  stopMatrix();
 }
 
-terminalOpenBtn && terminalOpenBtn.addEventListener('click', openTerminal);
+terminalOpenBtn  && terminalOpenBtn.addEventListener('click', openTerminal);
 terminalCloseBtn && terminalCloseBtn.addEventListener('click', closeTerminal);
-terminalCloseDot && terminalCloseDot.addEventListener('click', closeTerminal);
-terminalCloseDot && terminalCloseDot.addEventListener('keydown', e => {
-  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); closeTerminal(); }
-});
-terminalOverlay && terminalOverlay.addEventListener('click', closeTerminal);
+terminalOverlay  && terminalOverlay.addEventListener('click', closeTerminal);
+
+if (terminalCloseDot) {
+  terminalCloseDot.addEventListener('click', closeTerminal);
+  terminalCloseDot.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); closeTerminal(); }
+  });
+}
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && terminalPopup && terminalPopup.classList.contains('is-open')) closeTerminal();
 });
 
-function createSparkle(e) {
-  if (reduceMotion) return;
-  const sparkle = document.createElement('div');
-  const size = 4 + Math.random() * 6;
-  const x = e.clientX ?? e.touches?.[0]?.clientX ?? window.innerWidth / 2;
-  const y = e.clientY ?? e.touches?.[0]?.clientY ?? window.innerHeight / 2;
-  const angle = Math.random() * 360;
-  const dist = 20 + Math.random() * 40;
-  const colors = ['#5ad4e6', '#6cffb0', '#d4efe0'];
-  sparkle.style.cssText = `
-    position: fixed; pointer-events: none; z-index: 99999;
-    width: ${size}px; height: ${size}px;
-    background: ${colors[Math.floor(Math.random() * colors.length)]};
-    border-radius: 50%;
-    left: ${x}px; top: ${y}px;
-    box-shadow: 0 0 ${size * 2}px currentColor;
-    color: ${colors[Math.floor(Math.random() * colors.length)]};
-    transform: translate(-50%, -50%);
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    opacity: 1;
-  `;
-  document.body.append(sparkle);
-  requestAnimationFrame(() => {
-    sparkle.style.transform = `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist}px)) scale(0)`;
-    sparkle.style.opacity = '0';
-  });
-  setTimeout(() => sparkle.remove(), 700);
-}
-
-document.addEventListener('click', e => createSparkle(e));
-
-function scrollTerminalToBottom() {
+function scrollBottom() {
   if (terminalOutput) terminalOutput.scrollTop = terminalOutput.scrollHeight;
 }
 
-function appendOutputLine(parent, text, tone = '') {
-  const line = document.createElement('p');
-  line.className = 'terminal-output-line' + (tone ? ' ' + tone : '');
-  line.textContent = text;
-  parent.append(line);
+function makeLine(text, cls) {
+  const p = document.createElement('p');
+  p.className = 't-line' + (cls ? ' ' + cls : '');
+  p.textContent = text;
+  return p;
 }
 
-function appendOutputBlock(parent, text) {
-  const block = document.createElement('pre');
-  block.className = 'terminal-output-block';
-  block.textContent = text;
-  parent.append(block);
-  return block;
+function makeBlock(text, cls) {
+  const pre = document.createElement('pre');
+  pre.className = 't-block' + (cls ? ' ' + cls : '');
+  pre.textContent = text;
+  return pre;
 }
 
-function appendSystemMessage(lines) {
-  if (!terminalOutput) return;
+function appendEntry(lines) {
   const entry = document.createElement('div');
-  entry.className = 'terminal-entry';
-  lines.forEach((line, i) => appendOutputLine(entry, line, i === 0 ? 'is-accent' : 'is-muted'));
+  entry.className = 't-entry';
+  lines.forEach(([txt, cls]) => entry.append(makeLine(txt, cls)));
   terminalOutput.append(entry);
-  scrollTerminalToBottom();
+  scrollBottom();
 }
 
-function appendCommandEntry(commandText) {
-  if (!terminalOutput) return null;
+function appendCmdRow(rawCmd) {
   const entry = document.createElement('div');
-  entry.className = 'terminal-entry';
+  entry.className = 't-entry';
   const row = document.createElement('p');
-  row.className = 'terminal-command-row';
-  const user = document.createElement('span');
-  user.className = 'terminal-user';
-  user.textContent = 'barz@linkboard';
-  const path = document.createElement('span');
-  path.className = 'terminal-path';
-  path.textContent = '~';
-  const cmd = document.createElement('span');
-  cmd.className = 'terminal-command';
-  cmd.textContent = commandText;
-  row.append(user, ':', path, '$ ', cmd);
+  row.className = 't-cmd-row';
+  const u  = document.createElement('span'); u.className = 'tp-user';   u.textContent = 'barz@linkboard';
+  const s  = document.createElement('span'); s.className = 'tp-sep';    s.textContent = ':';
+  const ph = document.createElement('span'); ph.className = 'tp-path';  ph.textContent = '~';
+  const d  = document.createElement('span'); d.className = 'tp-dollar'; d.textContent = '$';
+  const c  = document.createElement('span'); c.className = 't-cmd-text'; c.textContent = rawCmd;
+  row.append(u, s, ph, d, c);
   entry.append(row);
   terminalOutput.append(entry);
   return entry;
 }
 
-function formatUptime(start) {
-  const s = Math.floor((Date.now() - start) / 1000);
+function uptime() {
+  const s = Math.floor((Date.now() - sessionStart) / 1000);
   const h = Math.floor(s / 3600);
   const m = Math.floor((s % 3600) / 60);
-  const sec = s % 60;
-  if (h > 0) return `${h}h ${m}m`;
-  if (m > 0) return `${m}m ${sec}s`;
-  return `${sec}s`;
+  const r = s % 60;
+  return h > 0 ? `${h}h ${m}m` : m > 0 ? `${m}m ${r}s` : `${r}s`;
 }
 
-function buildFastfetchText() {
-  const songState = siteTrack && !siteTrack.paused ? 'playing' : 'paused';
+function fastfetchText() {
+  const song = siteTrack && !siteTrack.paused ? 'playing' : 'paused';
   return [
     ' ____  _          _ ',
     '|  _ \\(_)__  _____| |',
@@ -242,16 +222,16 @@ function buildFastfetchText() {
     '| |_) | (_| | |  / /_',
     '|____/ \\__,_|_| /____|',
     '',
-    'user   → barz@linkboard',
-    'os     → Pixel Linux 44',
-    'shell  → /bin/pixelsh',
-    `uptime → ${formatUptime(sessionStartedAt)}`,
-    `song   → ${songState}`,
-    'links  → 4 loaded',
+    `user   → barz@linkboard`,
+    `os     → Pixel Linux 44`,
+    `shell  → /bin/pixelsh`,
+    `uptime → ${uptime()}`,
+    `song   → ${song}`,
+    `links  → 4 loaded`,
   ].join('\n');
 }
 
-function buildMatrixBlock(rows = 10, cols = 42) {
+function matrixFrame(rows, cols) {
   const chars = '01abcdef#$%*+-<>';
   let out = '';
   for (let r = 0; r < rows; r++) {
@@ -262,180 +242,178 @@ function buildMatrixBlock(rows = 10, cols = 42) {
   return out.trimEnd();
 }
 
-function stopMatrixAnimation() {
-  if (!matrixIntervalId) return;
-  clearInterval(matrixIntervalId);
-  matrixIntervalId = null;
+function stopMatrix() {
+  if (!matrixTimer) return;
+  clearInterval(matrixTimer);
+  matrixTimer = null;
 }
 
-function startMatrixAnimation(entry) {
-  const block = appendOutputBlock(entry, '');
-  block.classList.add('is-matrix');
-  const limit = 40;
+function startMatrix(entry) {
+  const block = makeBlock('', 'matrix');
+  entry.append(block);
   let frame = 0;
-  const render = () => { block.textContent = buildMatrixBlock(); scrollTerminalToBottom(); };
+  const limit = 40;
+  const render = () => { block.textContent = matrixFrame(10, 42); scrollBottom(); };
   render();
-  matrixIntervalId = setInterval(() => {
+  matrixTimer = setInterval(() => {
     frame++;
     render();
     if (frame >= limit) {
-      stopMatrixAnimation();
-      appendOutputLine(entry, 'matrix encerrado.', 'is-muted');
-      scrollTerminalToBottom();
+      stopMatrix();
+      entry.append(makeLine('matrix encerrado.', 'muted'));
+      scrollBottom();
     }
   }, 80);
 }
 
-async function runTerminalCommand(rawValue) {
-  if (!terminalOutput) return;
-  const commandLine = rawValue.trim();
-  if (!commandLine) return;
-  const [rawCmd, ...args] = commandLine.split(/\s+/);
-  const command = rawCmd.toLowerCase();
+async function runCmd(raw) {
+  if (!raw.trim()) return;
+  const parts   = raw.trim().split(/\s+/);
+  const cmd     = parts[0].toLowerCase();
+  const args    = parts.slice(1);
 
-  if (command === 'clear') {
-    stopMatrixAnimation();
-    terminalOutput.textContent = '';
-    return;
-  }
+  if (cmd === 'clear') { stopMatrix(); terminalOutput.textContent = ''; return; }
 
-  const entry = appendCommandEntry(commandLine);
-  if (!entry) return;
+  const entry = appendCmdRow(raw);
 
-  switch (command) {
+  switch (cmd) {
     case 'help':
-      appendOutputLine(entry, 'comandos disponíveis:', 'is-accent');
-      appendOutputLine(entry, 'help  fastfetch  ls  open <nome|url>');
-      appendOutputLine(entry, 'whoami  date  music [on|off]  clear');
-      appendOutputLine(entry, 'easter: sudo  matrix  fortune  hack', 'is-muted');
+      entry.append(makeLine('comandos disponíveis:', 'accent'));
+      entry.append(makeLine('help  fastfetch  ls  open <nome|url>'));
+      entry.append(makeLine('whoami  date  music [on|off]  clear'));
+      entry.append(makeLine('easter: sudo  matrix  fortune  hack', 'muted'));
       break;
+
     case 'fastfetch':
     case 'neofetch':
-      appendOutputBlock(entry, buildFastfetchText());
+      entry.append(makeBlock(fastfetchText()));
       break;
+
     case 'ls':
-      appendOutputLine(entry, 'portfolio  x  github  twitch', 'is-accent');
-      appendOutputLine(entry, 'use: open github', 'is-muted');
+      entry.append(makeLine('portfolio  x  github  twitch', 'accent'));
+      entry.append(makeLine('use: open github', 'muted'));
       break;
+
     case 'open': {
-      if (!args.length) { appendOutputLine(entry, 'uso: open <portfolio|x|github|twitch|url>'); break; }
+      if (!args.length) { entry.append(makeLine('uso: open <portfolio|x|github|twitch|url>')); break; }
       const target = args.join(' ').trim();
-      const url = terminalLinks[target.toLowerCase()] || (/^https?:\/\//i.test(target) ? target : '');
-      if (!url) { appendOutputLine(entry, `"${target}" nao encontrado. use "ls".`); break; }
+      const url    = LINKS[target.toLowerCase()] || (/^https?:\/\//i.test(target) ? target : '');
+      if (!url) { entry.append(makeLine(`"${target}" nao encontrado. use "ls".`)); break; }
       const w = window.open(url, '_blank', 'noopener,noreferrer');
-      appendOutputLine(entry, w ? `abrindo ${url}` : 'popup bloqueado pelo navegador.', w ? 'is-accent' : '');
+      entry.append(makeLine(w ? `abrindo ${url}` : 'popup bloqueado pelo navegador.', w ? 'accent' : ''));
       break;
     }
+
     case 'whoami':
-      appendOutputLine(entry, 'Despite everything, its still you.');
+      entry.append(makeLine('Despite everything, its still you.'));
       break;
+
     case 'date':
-      appendOutputLine(entry, new Date().toLocaleString('pt-BR', { dateStyle: 'full', timeStyle: 'medium' }));
+      entry.append(makeLine(new Date().toLocaleString('pt-BR', { dateStyle: 'full', timeStyle: 'medium' })));
       break;
+
     case 'music': {
-      const mode = args[0] ? args[0].toLowerCase() : 'toggle';
-      if (!['toggle', 'on', 'off'].includes(mode)) { appendOutputLine(entry, 'uso: music [on|off]'); break; }
-      const result = await setTrackPlayback(mode);
-      appendOutputLine(entry, result.message, result.ok ? 'is-accent' : '');
+      const mode   = (args[0] || 'toggle').toLowerCase();
+      if (!['toggle','on','off'].includes(mode)) { entry.append(makeLine('uso: music [on|off]')); break; }
+      const result = await togglePlayback(mode);
+      entry.append(makeLine(result.msg, result.ok ? 'accent' : ''));
       break;
     }
+
     case 'sudo':
-      appendOutputLine(entry, 'sudo: permissao negada. KKKKKKKKKKKK');
+      entry.append(makeLine('sudo: permissao negada. KKKKKKKKKKKK'));
       break;
+
     case 'matrix':
     case 'cmatrix':
-      stopMatrixAnimation();
-      appendOutputLine(entry, 'bootando matrix...');
-      startMatrixAnimation(entry);
+      stopMatrix();
+      entry.append(makeLine('bootando matrix...'));
+      startMatrix(entry);
       break;
+
     case 'fortune':
-      appendOutputLine(entry, terminalFortunes[Math.floor(Math.random() * terminalFortunes.length)], 'is-muted');
+      entry.append(makeLine(FORTUNES[Math.floor(Math.random() * FORTUNES.length)], 'muted'));
       break;
+
     case 'hack':
-      appendOutputLine(entry, 'iniciando protocolo ultra-secret...');
-      appendOutputLine(entry, '[##........] 23%');
-      appendOutputLine(entry, '[#####.....] 58%');
-      appendOutputLine(entry, '[##########] 100%');
-      appendOutputLine(entry, 'ih negou aqui irmão pkkkkk.', 'is-accent');
+      entry.append(makeLine('iniciando protocolo ultra-secret...'));
+      entry.append(makeLine('[##........] 23%'));
+      entry.append(makeLine('[#####.....] 58%'));
+      entry.append(makeLine('[##########] 100%'));
+      entry.append(makeLine('ih negou aqui irmão pkkkkk.', 'accent'));
       break;
+
     default:
-      appendOutputLine(entry, `${rawCmd}: command not found`);
-      appendOutputLine(entry, 'digite "help" para listar comandos.', 'is-muted');
+      entry.append(makeLine(`${parts[0]}: command not found`));
+      entry.append(makeLine('digite "help" para listar comandos.', 'muted'));
   }
 
-  scrollTerminalToBottom();
+  scrollBottom();
 }
 
-function handleTerminalHistory(direction) {
-  if (!terminalInput || !terminalHistory.length) return;
-  if (direction === 'up') {
-    terminalHistoryIndex = terminalHistoryIndex === -1
-      ? terminalHistory.length - 1
-      : Math.max(0, terminalHistoryIndex - 1);
-  } else {
-    if (terminalHistoryIndex === -1) return;
-    terminalHistoryIndex++;
-    if (terminalHistoryIndex >= terminalHistory.length) {
-      terminalHistoryIndex = -1;
-      terminalInput.value = '';
-      return;
-    }
-  }
-  terminalInput.value = terminalHistory[terminalHistoryIndex];
-  terminalInput.setSelectionRange(terminalInput.value.length, terminalInput.value.length);
-}
-
-async function typeText(element, text, speed = 20) {
-  if (reduceMotion || isMobile) { element.textContent = text; return; }
+async function typeInto(el, text, speed) {
+  if (reducedMotion || isMobile) { el.textContent = text; return; }
   for (let i = 0; i <= text.length; i++) {
-    element.textContent = text.slice(0, i);
+    el.textContent = text.slice(0, i);
     await new Promise(r => setTimeout(r, speed));
   }
 }
 
-async function initTerminal() {
-  const welcomeLines = [
-    'PixelShell 2.0 — inicializado.',
-    'digite "help" para listar os comandos.',
-    'dica: tente "fastfetch" ou "matrix".'
+async function bootTerminal() {
+  const lines = [
+    ['PixelShell 2.0 — inicializado.', 'accent'],
+    ['digite "help" para listar os comandos.', 'muted'],
+    ['dica: tente "fastfetch" ou "matrix".', 'muted'],
   ];
+  const entry = document.createElement('div');
+  entry.className = 't-entry';
+  terminalOutput.append(entry);
 
-  if (!reduceMotion && !isMobile) {
-    const entry = document.createElement('div');
-    entry.className = 'terminal-entry';
-    terminalOutput.append(entry);
-    for (let i = 0; i < welcomeLines.length; i++) {
-      const line = document.createElement('p');
-      line.className = 'terminal-output-line' + (i === 0 ? ' is-accent' : ' is-muted');
-      entry.append(line);
-      await typeText(line, welcomeLines[i], 18);
-      scrollTerminalToBottom();
-      await new Promise(r => setTimeout(r, 120));
+  if (!reducedMotion && !isMobile) {
+    for (const [text, cls] of lines) {
+      const p = makeLine('', cls);
+      entry.append(p);
+      await typeInto(p, text, 16);
+      scrollBottom();
+      await new Promise(r => setTimeout(r, 100));
     }
   } else {
-    appendSystemMessage(welcomeLines);
+    lines.forEach(([text, cls]) => entry.append(makeLine(text, cls)));
+    scrollBottom();
   }
 
   terminalForm.addEventListener('submit', e => {
     e.preventDefault();
-    const value = terminalInput.value.trim();
-    if (!value) return;
-    terminalHistory.push(value);
-    terminalHistoryIndex = -1;
+    const val = terminalInput.value.trim();
+    if (!val) return;
+    terminalHistory.push(val);
+    historyIdx = -1;
     terminalInput.value = '';
-    void runTerminalCommand(value);
+    void runCmd(val);
   });
 
   terminalInput.addEventListener('keydown', e => {
-    if (e.key === 'ArrowUp') { e.preventDefault(); handleTerminalHistory('up'); }
-    if (e.key === 'ArrowDown') { e.preventDefault(); handleTerminalHistory('down'); }
+    if (!terminalHistory.length) return;
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      historyIdx = historyIdx === -1 ? terminalHistory.length - 1 : Math.max(0, historyIdx - 1);
+      terminalInput.value = terminalHistory[historyIdx];
+      terminalInput.setSelectionRange(terminalInput.value.length, terminalInput.value.length);
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (historyIdx === -1) return;
+      historyIdx++;
+      if (historyIdx >= terminalHistory.length) { historyIdx = -1; terminalInput.value = ''; return; }
+      terminalInput.value = terminalHistory[historyIdx];
+      terminalInput.setSelectionRange(terminalInput.value.length, terminalInput.value.length);
+    }
   });
 
   terminalOutput.addEventListener('click', () => terminalInput.focus());
 }
 
-revealLayout();
-updateClock();
-enableSpotlight();
-enableMusicToggle();
-setInterval(updateClock, 30000);
+tickClock();
+setInterval(tickClock, 30000);
+initMusic();
+revealPage();
