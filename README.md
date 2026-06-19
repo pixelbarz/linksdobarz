@@ -1,111 +1,91 @@
 <div align="center">
 
-```
-██████╗  █████╗ ██████╗ ███████╗
-██╔══██╗██╔══██╗██╔══██╗╚══███╔╝
-██████╔╝███████║██████╔╝  ███╔╝ 
-██╔══██╗██╔══██║██╔══██╗ ███╔╝  
-██████╔╝██║  ██║██║  ██║███████╗
-╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
-         linkboard v2
-```
+# linkboard
 
-**Uma página de links pessoal com estética retro-tech, terminal interativo e player de música.**
+> página de links pessoal com estética cyberpunk dark, terminal interativo e trilha sonora questionável (mas boa é serio)
 
-[![Deploy](https://img.shields.io/badge/live-pixelbarz.github.io%2Flinksdobarz-blueviolet?style=flat-square&logo=github)](https://pixelbarz.github.io/linksdobarz/)
-[![HTML](https://img.shields.io/badge/HTML-19%25-orange?style=flat-square&logo=html5)](.)
-[![CSS](https://img.shields.io/badge/CSS-44%25-blue?style=flat-square&logo=css3)](.)
-[![JS](https://img.shields.io/badge/JavaScript-37%25-yellow?style=flat-square&logo=javascript)](.)
-[![License](https://img.shields.io/badge/feito_por-mim_:P-ff69b4?style=flat-square)](.)
+[![Deploy](https://img.shields.io/badge/deploy-GitHub%20Pages-blue?style=flat-square&logo=github)](https://pixelbarz.github.io/linksdobarz/)
+[![Feito com](https://img.shields.io/badge/feito%20com-HTML%20%2F%20CSS%20%2F%20JS-orange?style=flat-square)](#)
+[![Status](https://img.shields.io/badge/status-online%20e%20tocando%20Evangelion-green?style=flat-square)](#)
+
+**[pixelbarz.github.io/linksdobarz](https://pixelbarz.github.io/linksdobarz/)**
 
 </div>
 
 ---
 
-## ✦ Preview
+## O que é isso?
 
-> **→ [pixelbarz.github.io/linksdobarz](https://pixelbarz.github.io/linksdobarz/)**
+Uma página de links pessoal (tipo Linktree, mas feita do zero e com personalidade). O visual imita uma interface de sistema antigo: scanlines, fundo escuro, relógio em tempo real e um terminal funcional no canto da tela esperando você digitar `help`.
 
----
+A música que toca por padrão é o opening do Evangelion. Não tem motivo técnico pra isso. Só tem que ser assim.
 
-## ✦ O que é isso?
+## Funcionalidades
 
-Uma **link page** pessoal com visual inspirado em terminais e interfaces retro-futuristas. Sem frameworks, sem dependências pesadas — só HTML, CSS e JavaScript puro.
+**Visual**
 
----
+- Tema dark com efeito de scanline animado
+- Grid de fundo estilo terminal / HUD
+- Relógio em tempo real no header da janela
+- Layout em painéis inspirado em interfaces de sistema
 
-## ✦ Features
+**Terminal interativo**
 
-- 🖥️ **UI estilo terminal** — janela com chrome bar, clock em tempo real e scanlines
-- ⚡ **Terminal interativo** — popup com comandos reais digitáveis
-- 🎵 **Music player embutido** — toca `4555 - MeiaUm` com animação de equalizer
-- 🔗 **Links organizados** — Portfólio, X/Twitter, GitHub e Twitch
-- 📱 **Responsivo** — funciona bem em mobile e desktop
-- 🌙 **Dark theme** — fundo escuro com grid e efeito scanline
-- ✨ **Zero dependências** — puro HTML + CSS + JS vanilla
+- Abre com um botão dedicado na interface
+- Aceita comandos customizados
+- Fecha com o X ou clicando fora (como um modal normal de gente civilizada)
 
----
+**Player de música**
 
-## ✦ Stack
+- Toca uma faixa diretamente na página
+- Animação de barras de equalização quando está reproduzindo
+- Ícone de capa da música integrado ao layout
+
+**Links**
+
+- Portfólio pessoal
+- X / Twitter
+- GitHub
+- Twitch
+
+## Tecnologias
 
 | Tecnologia | Uso |
 |---|---|
-| `HTML5` | Estrutura semântica e acessível |
-| `CSS3` | Animações, grid layout, variáveis CSS |
-| `JavaScript` | Terminal interativo, clock, player |
-| `JetBrains Mono` | Fonte monospace do terminal |
-| `Space Grotesk` | Fonte principal da UI |
-| `GitHub Pages` | Deploy estático gratuito |
+| HTML5 | Estrutura semântica da página |
+| CSS3 | Layout, animações, efeitos visuais |
+| JavaScript (vanilla) | Terminal, player de áudio, relógio |
+| JetBrains Mono | Fonte monospace do terminal |
+| Space Grotesk | Fonte principal da interface |
+| GitHub Pages | Deploy e hospedagem |
 
----
+Sem frameworks. Sem dependências. Sem `node_modules` com 300MB. Só três arquivos e a força de vontade.
 
-## ✦ Estrutura
+## Estrutura do projeto
 
 ```
 linksdobarz/
 ├── index.html       # Estrutura da página
-├── style.css        # Toda a estética retro-tech
-├── script.js        # Terminal interativo + player + clock
-├── barzpfpwoah.png  # Foto de perfil
+├── style.css        # Todo o visual (scanlines, animações, layout)
+├── script.js        # Terminal, relógio, player de áudio
+├── barzpfpwoah.jpg  # Foto de perfil
 ├── 4555.jpg         # Capa da música
-├── 4555.mp3         # Faixa do player
-└── favicon.ico      # Ícone da aba
+├── 4555.mp3         # A música em si
+├── eva.png          # Capa alternativa (Evangelion)
+├── eva.mp3          # Opening do Evangelion (a música importante)
+└── favicon.ico      # Ícone do site
 ```
 
----
+## Rodando localmente
 
-## ✦ Rodando localmente
+Não precisa de build, bundler, ou qualquer ritual de instalação. Só clonar e abrir.
 
-```bash
-# Clone o repositório
-git clone https://github.com/pixelbarz/linksdobarz.git
+## Licença
 
-# Entre na pasta
-cd linksdobarz
-
-# Abra no navegador (qualquer servidor estático serve)
-# Exemplo com Python:
-python3 -m http.server 3000
-
-# Ou só abra o index.html direto no browser
-```
-
----
-
-## ✦ Terminal
-
-A página tem um terminal embutido. Clique no botão **terminal** e experimente os comandos disponíveis. `help` é um bom começo. 👀
-
----
-
-## ✦ Licença
-
-Pode se inspirar à vontade. Só não esquece de colocar crédito. 🤝
+Sem licença formal. Usa como quiser, mas seria legal dar um crédito se for copiar a estrutura toda. Ou não. Você que sabe.
 
 ---
 
 <div align="center">
-
-feito com 💜 por **[@pixelbarz](https://github.com/pixelbarz)**
-
+feito por <a href="https://github.com/pixelbarz">@pixelbarz</a> // 2026
 </div>
