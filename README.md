@@ -69,8 +69,6 @@ linksdobarz/
 ├── style.css        # Todo o visual (scanlines, animações, layout)
 ├── script.js        # Terminal, relógio, player de áudio
 ├── barzpfpwoah.jpg  # Foto de perfil
-├── 4555.jpg         # Capa da música
-├── 4555.mp3         # A música em si
 ├── eva.png          # Capa alternativa (Evangelion)
 ├── eva.mp3          # Opening do Evangelion (a música importante)
 └── favicon.ico      # Ícone do site
