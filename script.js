@@ -413,6 +413,23 @@ async function bootTerminal() {
   terminalOutput.addEventListener('click', () => terminalInput.focus());
 }
 
+let wasPlayingBeforeHide = false;
+
+document.addEventListener('visibilitychange', () => {
+  if (!siteTrack) return;
+
+  if (document.hidden) {
+    wasPlayingBeforeHide = !siteTrack.paused;
+    if (wasPlayingBeforeHide) siteTrack.pause();
+  } else {
+    if (wasPlayingBeforeHide) {
+      siteTrack.play().catch(() => {
+        setMusicPlaying(false);
+      });
+    }
+  }
+});
+
 tickClock();
 setInterval(tickClock, 30000);
 initMusic();
