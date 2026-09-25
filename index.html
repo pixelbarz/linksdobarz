@@ -3,49 +3,327 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#081329" />
-    <meta name="description" content="A central de links de Barz, também conhecido como pixelbarz." />
-    <title>barz - links</title>
+    <meta name="theme-color" content="#03142f" />
+    <meta
+      name="description"
+      content="A central de links de Barz, também conhecido como pixelbarz."
+    />
+    <title>pixelbarz | meus links</title>
     <link rel="icon" href="favicon.ico" />
     <link rel="stylesheet" href="style.css" />
+    <script>
+      document.documentElement.classList.add("js");
+      try {
+        if (localStorage.getItem("pixelbarz-intro-seen")) {
+          document.documentElement.classList.add("skip-intro");
+        }
+      } catch {}
+    </script>
   </head>
+
   <body>
-    <main class="site-shell" id="siteShell">
-      <header class="masthead">
-        <a class="wordmark" href="#top" aria-label="Início">BARZ<span>.</span></a>
-        <p class="availability"><span aria-hidden="true"></span> por aqui</p>
-        <button class="sound-toggle" id="musicToggle" type="button" aria-pressed="false" aria-controls="siteTrack"><span class="sound-mark" aria-hidden="true">//</span><span id="musicLabel">ouvir faixa</span></button>
+    <a class="skip-link" href="#view-stage">Pular para o conteúdo</a>
+
+    <div class="ambient" aria-hidden="true">
+      <div class="ambient-plane"></div>
+      <div class="ambient-slice"></div>
+      <div class="bubbles">
+        <i></i><i></i><i></i><i></i>
+      </div>
+    </div>
+
+    <div class="intro-sequence" aria-hidden="true">
+      <span class="intro-slice intro-slice-a"></span>
+      <span class="intro-slice intro-slice-b"></span>
+      <strong>PIXELBARZ</strong>
+    </div>
+
+    <div class="transition-swipe" id="transitionSwipe" aria-hidden="true">
+      <span></span>
+    </div>
+
+    <div class="app" id="app">
+      <header class="topbar">
+        <a class="brand" href="#home" data-view-link="home" aria-label="Ir para o início">
+          <span class="brand-cut" aria-hidden="true"></span>
+          <span>PIXEL</span><strong>BARZ.</strong>
+        </a>
+
+        <div class="topbar-actions">
+          <button
+            class="sound-toggle"
+            id="musicToggle"
+            type="button"
+            aria-pressed="false"
+            aria-controls="siteTrack"
+          >
+            <span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span id="musicLabel">ouvir faixa</span>
+          </button>
+          <p class="clock" aria-label="Horário local"><span id="clock">--:--</span></p>
+        </div>
       </header>
-      <section class="identity" id="top" aria-labelledby="name">
-        <div class="identity-copy">
-          <p class="kicker">pixelbarz / central</p>
-          <h1 id="name">barz.</h1>
-          <p class="intro">um canto da internet para trabalho, código, jogos e o que eu to fazendo no geral.</p>
-          <p class="shortcut-note"><kbd>Tab</kbd> passe pelos destinos <span aria-hidden="true">↘</span></p>
-        </div>
-        <figure class="portrait-wrap"><div class="portrait-shape"><img src="makoto.jpg" alt="Retrato de Pixelbarz" width="600" height="600" /></div><figcaption>@pixelbarz</figcaption></figure>
-      </section>
-      <section class="directory" aria-labelledby="directoryTitle">
-        <div class="directory-heading"><p class="kicker">onde me encontrar</p><h2 id="directoryTitle">Escolha uma<br />direção.</h2></div>
-        <div class="link-experience">
-          <nav class="link-index" aria-label="Destinos de Pixelbarz">
-            <a class="destination featured is-active" href="https://pixelbarz.cc" target="_blank" rel="noreferrer" data-title="Portfólio" data-detail="Projetos, experimentos e um pouco do meu jeito de pensar na web." data-code="SITE" data-number="01"><span class="index-number">01</span><span class="destination-name">Portfólio</span><span class="destination-mark" aria-hidden="true">↗</span></a>
-            <a class="destination" href="https://github.com/pixelbarz" target="_blank" rel="noreferrer" data-title="GitHub" data-detail="Código, repositórios e as coisas que to aprendendo enquanto construo." data-code="CODE" data-number="02"><span class="index-number">02</span><span class="destination-name">GitHub</span><span class="destination-mark" aria-hidden="true">↗</span></a>
-            <a class="destination" href="https://x.com/pixelbarz" target="_blank" rel="noreferrer" data-title="X / Twitter" data-detail="Posto umas coisas lá de vez em quando." data-code="SOCIAL" data-number="03"><span class="index-number">03</span><span class="destination-name">X <small>/ Twitter</small></span><span class="destination-mark" aria-hidden="true">↗</span></a>
-            <a class="destination" href="https://www.twitch.tv/pixelbarz" target="_blank" rel="noreferrer" data-title="Twitch" data-detail="Ao vivo quando da vontade de jogar alguma coisa com o pessoal." data-code="LIVE" data-number="04"><span class="index-number">04</span><span class="destination-name">Twitch</span><span class="destination-mark" aria-hidden="true">↗</span></a>
-            <a class="destination" href="https://yourgamerprofile.com/pixelbarz" target="_blank" rel="noreferrer" data-title="Your Gamer Profile" data-detail="Meu perfil de jogador, para quem quiser dar uma olhada no q eu jogo." data-code="PLAY" data-number="05"><span class="index-number">05</span><span class="destination-name">Gamer <small>profile</small></span><span class="destination-mark" aria-hidden="true">↗</span></a>
-          </nav>
-          <aside class="context-card" aria-live="polite"><p class="context-code"><span id="activeNumber">01</span> / <span id="activeCode">SITE</span></p><div class="context-main"><p class="context-label">destino selecionado</p><h3 id="activeTitle">Portfólio</h3><p id="activeDetail">Projetos, experimentos e um pouco do meu jeito de pensar na web.</p></div><p class="context-action">abrir em nova aba <span aria-hidden="true">↗</span></p></aside>
-        </div>
-      </section>
-      <section class="now-playing" aria-label="Faixa disponível">
-        <img src="fmfl.jpg" alt="Capa da faixa Full Moon Full Life" width="96" height="96" />
-        <div><p class="kicker">musicao muito zika</p><p>Full Moon Full Life <span>- Persona 3 Reload</span></p></div>
-        <button class="play-button" id="musicPlayButton" type="button" aria-label="Tocar ou pausar Full Moon Full Life"><span id="playSymbol" aria-hidden="true">▶</span></button>
-        <audio id="siteTrack" preload="metadata"><source src="fmfl.mp3" type="audio/mpeg" /></audio>
-      </section>
-      <footer><p>feito por mim :P</p><p id="clock">--:--</p></footer>
-    </main>
+
+      <div class="app-layout">
+        <nav class="section-nav" aria-label="Seções principais">
+          <a class="nav-item is-active" href="#home" data-view-link="home" aria-current="page">
+            <span class="nav-symbol" aria-hidden="true"></span>
+            <span class="nav-label">Início</span>
+          </a>
+          <a class="nav-item" href="#socials" data-view-link="socials">
+            <span class="nav-symbol" aria-hidden="true"></span>
+            <span class="nav-label">Social</span>
+          </a>
+          <a class="nav-item" href="#gaming" data-view-link="gaming">
+            <span class="nav-symbol" aria-hidden="true"></span>
+            <span class="nav-label">Gaming</span>
+          </a>
+          <a class="nav-item" href="#projects" data-view-link="projects">
+            <span class="nav-symbol" aria-hidden="true"></span>
+            <span class="nav-label">Projetos</span>
+          </a>
+          <a class="nav-item" href="#about" data-view-link="about">
+            <span class="nav-symbol" aria-hidden="true"></span>
+            <span class="nav-label">Sobre</span>
+          </a>
+          <div class="nav-wake" aria-hidden="true"></div>
+        </nav>
+
+        <main class="stage" id="view-stage" tabindex="-1">
+          <section
+            class="view view-home is-active"
+            id="home"
+            data-view="home"
+            aria-labelledby="home-title"
+            aria-hidden="false"
+          >
+            <div class="home-copy view-sequence">
+              <p class="eyebrow">um canto meu na internet</p>
+              <h1 id="home-title">pixel<span>barz</span></h1>
+              <p class="hero-intro">
+                Trabalho, código, jogos e o que eu tô fazendo no geral.
+              </p>
+              <a class="primary-action" href="#projects" data-view-link="projects">
+                ver meus projetos <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+
+            <figure class="identity-visual view-sequence">
+              <div class="portrait-backdrop"></div>
+              <div class="portrait-cut">
+                <img
+                  src="makoto.jpg"
+                  alt="Avatar de Pixelbarz"
+                  width="736"
+                  height="736"
+                  fetchpriority="high"
+                />
+              </div>
+              <figcaption>@pixelbarz</figcaption>
+            </figure>
+          </section>
+
+          <section
+            class="view view-socials"
+            id="socials"
+            data-view="socials"
+            aria-labelledby="socials-title"
+            aria-hidden="true"
+          >
+            <div class="social-heading view-sequence">
+              <h2 id="socials-title">Social</h2>
+            </div>
+
+            <a
+              class="social-feature view-sequence"
+              href="https://x.com/pixelbarz"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span class="brand-icon">
+                <img
+                  src="https://cdn.simpleicons.org/x/ffffff"
+                  alt=""
+                  width="48"
+                  height="48"
+                />
+              </span>
+              <span class="social-copy">
+                <small>X / Twitter</small>
+                <strong>@pixelbarz</strong>
+                <span>Posto umas coisas lá de vez em quando.</span>
+              </span>
+              <span class="external-mark" aria-hidden="true">↗</span>
+            </a>
+          </section>
+
+          <section
+            class="view view-gaming"
+            id="gaming"
+            data-view="gaming"
+            aria-labelledby="gaming-title"
+            aria-hidden="true"
+          >
+            <div class="gaming-heading view-sequence">
+              <h2 id="gaming-title">Gaming</h2>
+              <p class="gaming-intro">onde eu jogo e apareço ao vivo</p>
+            </div>
+
+            <div class="gaming-menu view-sequence">
+              <a
+                class="game-link game-link-steam"
+                href="https://steamcommunity.com/id/pixelbarz/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span class="game-icon">
+                  <img
+                    src="https://cdn.simpleicons.org/steam/ffffff"
+                    alt=""
+                    width="34"
+                    height="34"
+                  />
+                </span>
+                <span><small>perfil principal</small><strong>Steam</strong></span>
+                <span class="external-mark" aria-hidden="true">↗</span>
+              </a>
+
+              <a
+                class="game-link game-link-twitch"
+                href="https://www.twitch.tv/pixelbarz"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span class="game-icon">
+                  <img
+                    src="https://cdn.simpleicons.org/twitch/ffffff"
+                    alt=""
+                    width="34"
+                    height="34"
+                  />
+                </span>
+                <span><small>ao vivo quando dá vontade</small><strong>Twitch</strong></span>
+                <span class="external-mark" aria-hidden="true">↗</span>
+              </a>
+
+              <a
+                class="game-link game-link-profile"
+                href="https://yourgamerprofile.com/pixelbarz"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span class="game-icon gamer-profile-icon">
+                  <img
+                    src="https://yourgamerprofile.com/icons/logo.png"
+                    alt=""
+                    width="34"
+                    height="34"
+                  />
+                </span>
+                <span><small>o que eu ando jogando</small><strong>Gamer Profile</strong></span>
+                <span class="external-mark" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </section>
+
+          <section
+            class="view view-projects"
+            id="projects"
+            data-view="projects"
+            aria-labelledby="projects-title"
+            aria-hidden="true"
+          >
+            <div class="projects-heading view-sequence">
+              <h2 id="projects-title">Projetos</h2>
+            </div>
+
+            <div class="project-composition">
+              <a
+                class="project-link project-portfolio view-sequence"
+                href="https://pixelbarz.cc"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span class="project-type">site principal</span>
+                <strong>Portfólio</strong>
+                <span>Projetos, experimentos e mais umas coisas aí</span>
+                <span class="external-mark" aria-hidden="true">↗</span>
+              </a>
+
+              <a
+                class="project-link project-github view-sequence"
+                href="https://github.com/pixelbarz"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span class="project-glyph">
+                  <img
+                    src="https://cdn.simpleicons.org/github/ffffff"
+                    alt=""
+                    width="42"
+                    height="42"
+                  />
+                </span>
+                <strong>GitHub</strong>
+                <span>Código, repositórios e o que eu tô aprendendo.</span>
+                <span class="external-mark" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </section>
+
+          <section
+            class="view view-about"
+            id="about"
+            data-view="about"
+            aria-labelledby="about-title"
+            aria-hidden="true"
+          >
+            <div class="about-copy view-sequence">
+              <h2 id="about-title">Sobre.</h2>
+              <p>
+                Eu sou o pixelbarz e aqui tem um pouco do que eu faço e do q eu gosto em geral. :P (Ainda vai ter mais coisa no site)
+              </p>
+              <p class="about-handle">@pixelbarz</p>
+            </div>
+
+            <div class="music-panel view-sequence">
+              <div class="album-cut">
+                <img
+                  src="fmfl.jpg"
+                  alt="Capa da faixa Full Moon Full Life"
+                  width="500"
+                  height="500"
+                  loading="lazy"
+                />
+              </div>
+              <div class="track-copy">
+                <small>musicao muito zika</small>
+                <strong>Full Moon Full Life</strong>
+                <span>Persona 3 Reload</span>
+              </div>
+              <button
+                class="play-button"
+                id="musicPlayButton"
+                type="button"
+                aria-label="Tocar Full Moon Full Life"
+              >
+                <span id="playSymbol" aria-hidden="true">▶</span>
+              </button>
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <footer class="app-footer">
+        <p>feito por mim :P</p>
+        <p class="view-status" id="viewStatus" aria-live="polite">Início</p>
+      </footer>
+    </div>
+
+    <audio id="siteTrack" preload="metadata">
+      <source src="fmfl.mp3" type="audio/mpeg" />
+    </audio>
+
     <script src="script.js"></script>
   </body>
 </html>
